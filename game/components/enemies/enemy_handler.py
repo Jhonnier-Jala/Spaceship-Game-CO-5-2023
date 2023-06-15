@@ -3,18 +3,24 @@ from game.components.enemies.ship import Ship
 class EnemyHandler:
     def __init__(self):
         self.enemies = []
-        self.enemies.append(Ship())
         self.timer = 0
-        self.delay = 200
+        self.delay = 100
     
-    def update(self):
+    def update(self, bullet_handler):
         self.timer += 1
         if self.timer >= self.delay:
             self.enemies.append(Ship())
             self.timer = 0
         for enemy in self.enemies:
-            enemy.update()
+            enemy.update(bullet_handler)
 
     def draw(self,screen):
         for enemy in self.enemies:
             enemy.draw(screen)
+    
+    def add_enemy(self):
+        if len(self.enemies) < 2:
+            self.enemies.append(Ship())
+            
+    def remove_enemy(self,enemy):
+        self.enemies.remove(enemy)
