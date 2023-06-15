@@ -1,4 +1,5 @@
-from game.utils.constants import BULLET_ENEMY_TYPE, SCREEN_HEIGHT
+from game.components.bullets.bullet_spaceship import BulletSpaceship
+from game.utils.constants import BULLET_ENEMY_TYPE, SCREEN_HEIGHT, DEFAULT_TYPE
 from game.components.bullets.bullet_enemy import BulletEnemy
 
 class BulletHandler:
@@ -19,6 +20,8 @@ class BulletHandler:
     def add_bullet(self, type, center):
         if type == BULLET_ENEMY_TYPE:
             self.bullets.append(BulletEnemy(center))
+        elif type == DEFAULT_TYPE:
+            self.bullets.append(BulletSpaceship(center))
 
     def remove_bullet(self,bullet):
         self.bullets.remove(bullet)

@@ -8,7 +8,9 @@ class Enemy:
     #SPEED_Y = 1
     LEFT = "left"
     RIGHT = "right"
-    MOV_X = [LEFT,RIGHT]
+    DIAGONAL = "diagonal"
+    BOUNCE = "bounce"
+    MOVEMENTS = [LEFT,RIGHT,DIAGONAL,BOUNCE]
     INTERVAL = 100
     SHOOTING_TIME = 30
     def __init__(self,image,speed_x,speed_y):
@@ -16,7 +18,7 @@ class Enemy:
         self.rect = self.image.get_rect()
         self.rect.x = random.choice(self.X_POS_LIST)
         self.rect.y = self.Y_POS
-        self.mov_x = random.choice(self.MOV_X)
+        self.mov = random.choice(self.MOVEMENTS)
         self.speed_x = speed_x
         self.speed_y = speed_y
         self.index = 0
@@ -36,20 +38,28 @@ class Enemy:
     def move (self):
         # self.rect.y += self.SPEED_Y
         self.rect.y += self.speed_y
-        if self.mov_x == self.LEFT:
+        if self.mov == self.LEFT:
             # self.rect.x -= self.SPEED_X
             self.rect.x -= self.speed_x
             if self.index > self.INTERVAL or self.rect.x <= 0:
-                self.mov_x = self.RIGHT
+                self.mov = self.RIGHT
                 self.index = 0
+        elif self.mov == self.DIAGONAL:            
+            self.rect.y += self.speed_y
+            if self.index > self.INTERVAL or self.rect.x <= 0:
+                self.rect.y -= self.speed_y
+                self.index = 0
+                
+        elif self.mov == self.BOUNCE:
+            if self.rect.y <= 0 or self.rect.y >= SCREEN_HEIGHT - self.rect.height:
+                self.speed_y = -self.speed_y
+
         else:
             # self.rect.x += self.SPEED_X
             self.rect.x += self.speed_x
             if self.index > self.INTERVAL or self.rect.x >= SCREEN_WIDTH - self.rect.width:
-                self.mov_x = self.LEFT
+                self.mov = self.LEFT
                 self.index = 0
-        if self.index % 2 == 0:
-            self.rect.y += self.speed_y
         self.index += 1
 
     def shoot(self, bullet_handler):

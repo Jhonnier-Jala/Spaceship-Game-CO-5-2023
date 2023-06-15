@@ -1,7 +1,7 @@
 import pygame
 import random
 from game.components.enemies.enemy import Enemy
-from game.utils.constants import ENEMY_3
+from game.utils.constants import ENEMY_3, SCREEN_HEIGHT
 
 class ShipOvni(Enemy):
     WIDHT = 40
@@ -15,4 +15,3 @@ class ShipOvni(Enemy):
         self.speed_x = random.choice(self.SPEED_X)
         self.speed_y = random.choice(self.SPEED_Y)
         super().__init__(self.image, self.speed_x, self.speed_y)
-

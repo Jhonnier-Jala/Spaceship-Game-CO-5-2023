@@ -12,11 +12,11 @@ class EnemyHandler:
         self.delay = 100
     
     def update(self, bullet_handler):
-        # self.timer += 1
-        self.add_enemy()
-        # if self.timer >= self.delay:
-        #     # self.enemies.append(Ship())
-        #     self.timer = 0
+        self.timer += 1
+        if self.timer >= self.delay:
+            self.add_enemy()
+            # self.enemies.append(Ship())
+            self.timer = 0
         for enemy in self.enemies:
             enemy.update(bullet_handler)
             if not enemy.is_alive:
