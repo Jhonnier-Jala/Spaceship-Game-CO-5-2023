@@ -1,4 +1,4 @@
-from game.utils.constants import BULLET_ENEMY_TYPE
+from game.utils.constants import BULLET_ENEMY_TYPE, SCREEN_HEIGHT
 from game.components.bullets.bullet_enemy import BulletEnemy
 
 class BulletHandler:
@@ -8,6 +8,9 @@ class BulletHandler:
     def update(self, player):
         for bullet in self.bullets:
             bullet.update(player)
+            if bullet.rect.top >= SCREEN_HEIGHT:
+                self.bullets.remove(bullet)
+                # print(len(self.bullets))
 
     def draw(self, screen):
         for bullet in self.bullets:
@@ -16,3 +19,6 @@ class BulletHandler:
     def add_bullet(self, type, center):
         if type == BULLET_ENEMY_TYPE:
             self.bullets.append(BulletEnemy(center))
+
+    def remove_bullet(self,bullet):
+        self.bullets.remove(bullet)

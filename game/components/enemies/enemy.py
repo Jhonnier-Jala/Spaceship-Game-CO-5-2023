@@ -10,7 +10,7 @@ class Enemy:
     RIGHT = "right"
     MOV_X = [LEFT,RIGHT]
     INTERVAL = 100
-    SHOOTING_TIME = 10
+    SHOOTING_TIME = 30
     def __init__(self,image,speed_x,speed_y):
         self.image = image
         self.rect = self.image.get_rect()
@@ -48,7 +48,10 @@ class Enemy:
             if self.index > self.INTERVAL or self.rect.x >= SCREEN_WIDTH - self.rect.width:
                 self.mov_x = self.LEFT
                 self.index = 0
+        if self.index % 2 == 0:
+            self.rect.y += self.speed_y
         self.index += 1
+
     def shoot(self, bullet_handler):
         if self.shooting_time % self.SHOOTING_TIME == 0:
             bullet_handler.add_bullet(BULLET_ENEMY_TYPE, self.rect.center)
