@@ -39,7 +39,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input,self.bullet_handler)
         self.enemi_handler.update(self.bullet_handler)
-        self.bullet_handler.update(self.player)
+        self.bullet_handler.update(self.player, self.enemi_handler)
         if not self.player.is_alive:
             pygame.time.delay(500)
             self.playing = False
@@ -50,7 +50,6 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.enemi_handler.draw(self.screen)
-        self.bullet_handler.draw(self.screen)
         self.bullet_handler.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
