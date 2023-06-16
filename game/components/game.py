@@ -1,6 +1,6 @@
 import pygame
 from game.components.bullets.bullet_handler import BulletHandler
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, WHITE_COLOR
+#from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components import text_util
@@ -41,24 +41,19 @@ class Game:
                 self.reset()
 
     def update(self):
-        if self.playing:
-            user_input = pygame.key.get_pressed()
-            self.player.update(user_input)
-            self.enemy_handler.update(self.bullet_handler)
-            self.bullet_handler.update(self.player)
-            if not self.player.is_alive:
-                pygame.time.delay(500)
-                self.playing = False
+        user_input = pygame.key.get_pressed()
+        self.player.update(user_input)
+        self.enemi_handler.update(self.bullet_handler)
+        self.bullet_handler.update(self.player)
+        if not self.player.is_alive:
+            pygame.time.delay(500)
+            self.playing = False
 
     def draw(self):
         self.draw_background()
-        if self.playing:
-            self.clock.tick(FPS)
-            self.player.draw(self.screen)
-            self.enemy_handler.draw(self.screen)
-            self.bullet_handler.draw(self.screen)
-        else:
-            self.draw_menu()
+        self.player.draw(self.screen)
+        self.enemi_handler.draw(self.screen)
+        self.bullet_handler.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
