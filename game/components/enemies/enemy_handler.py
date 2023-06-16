@@ -3,6 +3,7 @@ from game.components.enemies.ship import Ship
 class EnemyHandler:
     def __init__(self):
         self.enemies = []
+        self.number_enemy_destroyer = 0
         self.timer = 0
         self.delay = 100
     
@@ -24,3 +25,6 @@ class EnemyHandler:
             
     def remove_enemy(self,enemy):
         self.enemies.remove(enemy)
+    
+    def reset(self):
+        self.enemies = []
