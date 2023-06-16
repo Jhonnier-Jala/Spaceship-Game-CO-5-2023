@@ -1,9 +1,9 @@
 import pygame
 from game.components.bullets.bullet_handler import BulletHandler
-#from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, WHITE_COLOR
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
-from game.components import text_util
+from game.components import text_utils
 
 class Game:
     def __init__(self):
@@ -20,6 +20,8 @@ class Game:
         self.player = Spaceship()
         self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
+        self.score = 0
+        self.number_death = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -41,19 +43,26 @@ class Game:
                 self.reset()
 
     def update(self):
-        user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
-        self.enemi_handler.update(self.bullet_handler)
-        self.bullet_handler.update(self.player)
-        if not self.player.is_alive:
-            pygame.time.delay(500)
-            self.playing = False
+        if self.playing:
+            user_input = pygame.key.get_pressed()
+            self.player.update(user_input, self.bullet_handler)
+            self.enemy_handler.update(self.bullet_handler)
+            self.bullet_handler.update(self.player, self.enemy_handler.enemies)
+            self.score = self.enemy_handler.number_enemy_destroyed
+            if not self.player.is_alive:
+                pygame.time.delay(500)
+                self.playing = False
+                self.number_death += 1
 
     def draw(self):
         self.draw_background()
-        self.player.draw(self.screen)
-        self.enemi_handler.draw(self.screen)
-        self.bullet_handler.draw(self.screen)
+        if self.playing:
+            self.player.draw(self.screen)
+            self.enemy_handler.draw(self.screen)
+            self.bullet_handler.draw(self.screen)
+            self.draw_score()
+        else:
+            self.draw_menu()
         pygame.display.update()
         pygame.display.flip()
 
@@ -68,8 +77,18 @@ class Game:
         self.y_pos_bg += self.game_speed
 
     def draw_menu(self):
-        text, text_rect = text_util.get_message("Press any key to Start", 30, WHITE_COLOR)
-        self.screen.blit(text, text_rect)
+        if self.number_death == 0:
+            text, text_rect = text_utils.get_message('Press any Key to Start', 30, WHITE_COLOR)
+            self.screen.blit(text, text_rect)
+        else:
+            text, text_rect = text_utils.get_message('Press any Key to Restart', 30, WHITE_COLOR)
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2 +50)
+            self.screen.blit(text, text_rect)
+            self.screen.blit(score, score_rect)
+    
+    def draw_score(self):
+        score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, WHITE_COLOR, 1000, 40)
+        self.screen.blit(score, score_rect)
 
     def reset(self):
         self.player.reset()

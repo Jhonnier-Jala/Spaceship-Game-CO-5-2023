@@ -8,7 +8,7 @@ class BulletHandler:
     
     def update(self, player, enemies):
         for bullet in self.bullets:
-            bullet.update(player)
+            # bullet.update(player)
             if not bullet.is_alive:
                 self.remove_bullet(bullet)
             else:

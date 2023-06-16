@@ -23,6 +23,7 @@ class Enemy:
         self.speed_y = speed_y
         self.index = 0
         self.is_alive = True
+        self.is_destroyed = False
         self.shooting_time = 0
     
     def update(self, bullet_handler):

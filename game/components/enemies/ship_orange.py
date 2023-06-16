@@ -1,16 +1,16 @@
 import pygame
 import random
 from game.components.enemies.enemy import Enemy
-from game.utils.constants import ENEMY_1
+from game.utils.constants import ENEMY_5, SCREEN_HEIGHT
 
-class Ship(Enemy):
-    WIDHT = 40
-    HEIGHT = 60
+class ShipOrange(Enemy):
+    WIDHT = 55
+    HEIGHT = 70
     SPEED_X = [i for i in range(10)]
     SPEED_Y = [i for i in range(5)]
 
     def __init__(self):
-        self.image = ENEMY_1
+        self.image = ENEMY_5
         self.image = pygame.transform.scale(self.image,(self.WIDHT,self.HEIGHT))
         self.speed_x = random.choice(self.SPEED_X)
         self.speed_y = random.choice(self.SPEED_Y)
