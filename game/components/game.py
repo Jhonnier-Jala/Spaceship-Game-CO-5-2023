@@ -17,7 +17,7 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.player = Spaceship()
-        self.enemi_handler = EnemyHandler()
+        self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
 
     def run(self):
@@ -38,8 +38,8 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input,self.bullet_handler)
-        self.enemi_handler.update(self.bullet_handler)
-        self.bullet_handler.update(self.player, self.enemi_handler)
+        self.enemy_handler.update(self.bullet_handler)
+        self.bullet_handler.update(self.player, self.enemy_handler)
         if not self.player.is_alive:
             pygame.time.delay(500)
             self.playing = False
@@ -49,7 +49,7 @@ class Game:
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
-        self.enemi_handler.draw(self.screen)
+        self.enemy_handler.draw(self.screen)
         self.bullet_handler.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
