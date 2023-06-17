@@ -1,9 +1,12 @@
 import pygame
-from game.components.bullets.bullet_handler import BulletHandler
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, WHITE_COLOR
+
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR,DEFAULT_TYPE
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
+from game.components.bullets.bullet_handler import BulletHandler
 from game.components import text_utils
+from game.components.power.power_handled import PowerHandled
+
 
 class Game:
     def __init__(self):
@@ -22,6 +25,9 @@ class Game:
         self.bullet_handler = BulletHandler()
         self.score = 0
         self.number_death = 0
+        self.max_score = 0
+        self.power_type = DEFAULT_TYPE
+        self.power = PowerHandled()
 
     def run(self):
         # Game loop: events - update - draw
@@ -49,17 +55,21 @@ class Game:
             self.enemy_handler.update(self.bullet_handler)
             self.bullet_handler.update(self.player, self.enemy_handler.enemies)
             self.score = self.enemy_handler.number_enemy_destroyed
+            self.power.update(self.player)
+            # self.score()
             if not self.player.is_alive:
-                pygame.time.delay(500)
+                pygame.time.delay(300)
                 self.playing = False
                 self.number_death += 1
 
     def draw(self):
         self.draw_background()
         if self.playing:
+            self.clock.tick(FPS)       
             self.player.draw(self.screen)
             self.enemy_handler.draw(self.screen)
             self.bullet_handler.draw(self.screen)
+            self.power.draw(self.screen)
             self.draw_score()
         else:
             self.draw_menu()
@@ -75,7 +85,7 @@ class Game:
             self.screen.blit(image, (self.x_pos_bg, self.y_pos_bg - image_height))
             self.y_pos_bg = 0
         self.y_pos_bg += self.game_speed
-
+    
     def draw_menu(self):
         if self.number_death == 0:
             text, text_rect = text_utils.get_message('Press any Key to Start', 30, WHITE_COLOR)
@@ -83,14 +93,36 @@ class Game:
         else:
             text, text_rect = text_utils.get_message('Press any Key to Restart', 30, WHITE_COLOR)
             score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2 +50)
+            max_score, max_score_rect = text_utils.get_message(f'Max score is: {self.max_score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2+70)
             self.screen.blit(text, text_rect)
             self.screen.blit(score, score_rect)
+            self.screen.blit(max_score, max_score_rect)
+        
+    def score(self):
+        self.score = self.enemy_handler.number_enemy_destroyed
+        if self.score > self.max_score:
+            self.max_score = self.score
     
     def draw_score(self):
-        score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, WHITE_COLOR, 1000, 40)
+        score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 12, WHITE_COLOR, 1000, 40)
+        max_score, max_score_rect = text_utils.get_message(f'Your Max score is: {self.max_score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2+70)
         self.screen.blit(score, score_rect)
 
+    def draw_power_time(self):
+        if self.player.has_power:
+            power_time = round((self.player.power_typev-pygame.time.get_tick()) /100,2)
+
+            if power_time >= 0:
+                text_power, text_power_rect = text_utils.get_message(f'Your Max score is: {self.max_score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2+70)
+                self.screen.blit(score, score_rect)
+            else:
+                self.player.has_power = False
+                self.player.power_type = DEFAUL_TYPE
+                self.player.set_default_image()
+
+        
     def reset(self):
         self.player.reset()
         self.enemy_handler.reset()
         self.bullet_handler.reset()
+        self.score = 0

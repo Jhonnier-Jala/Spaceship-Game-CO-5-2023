@@ -4,8 +4,6 @@ from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_ENEMY_TYPE
 class Enemy:
     X_POS_LIST = [i for i in range(50,SCREEN_WIDTH,50)]
     Y_POS = 20
-    #SPEED_X = 5
-    #SPEED_Y = 1
     LEFT = "left"
     RIGHT = "right"
     DIAGONAL = "diagonal"
@@ -13,19 +11,20 @@ class Enemy:
     MOVEMENTS = [LEFT,RIGHT,DIAGONAL,BOUNCE]
     INTERVAL = 100
     SHOOTING_TIME = 30
-    def __init__(self,image,speed_x,speed_y):
+
+    def __init__(self, image,speed_x,speed_y):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = random.choice(self.X_POS_LIST)
         self.rect.y = self.Y_POS
         self.mov = random.choice(self.MOVEMENTS)
+        self.index = 0
         self.speed_x = speed_x
         self.speed_y = speed_y
-        self.index = 0
         self.is_alive = True
         self.is_destroyed = False
         self.shooting_time = 0
-    
+
     def update(self, bullet_handler):
         if self.rect.y >= SCREEN_HEIGHT:
             self.is_alive = False
@@ -33,11 +32,11 @@ class Enemy:
         self.move()
         self.shoot(bullet_handler)
 
-    def draw(self,screen):
-        screen.blit(self.image,self.rect)
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
-    def move (self):
-        # self.rect.y += self.SPEED_Y
+    def move(self):
+         # self.rect.y += self.SPEED_Y
         self.rect.y += self.speed_y
         if self.mov == self.LEFT:
             # self.rect.x -= self.SPEED_X
@@ -49,12 +48,10 @@ class Enemy:
             self.rect.y += self.speed_y
             if self.index > self.INTERVAL or self.rect.x <= 0:
                 self.rect.y -= self.speed_y
-                self.index = 0
-                
+                self.index = 0                
         elif self.mov == self.BOUNCE:
             if self.rect.y <= 0 or self.rect.y >= SCREEN_HEIGHT - self.rect.height:
                 self.speed_y = -self.speed_y
-
         else:
             # self.rect.x += self.SPEED_X
             self.rect.x += self.speed_x

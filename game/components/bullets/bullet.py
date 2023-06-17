@@ -1,8 +1,8 @@
-
+from game.utils.constants import SCREEN_HEIGHT
 
 
 class Bullet:
-    def __init__(self, image,center, type):
+    def __init__(self, image, type, center):
         self.image = image
         self.type = type
         self.rect = self.image.get_rect()
