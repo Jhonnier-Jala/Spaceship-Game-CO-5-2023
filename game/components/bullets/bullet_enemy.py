@@ -1,6 +1,6 @@
 import pygame
 from game.components.bullets.bullet import Bullet
-from game.utils.constants import BULLET_ENEMY, BULLET_ENEMY_TYPE, SCREEN_HEIGHT,SHIELD_TYPE
+from game.utils.constants import BULLET_ENEMY, BULLET_ENEMY_TYPE, SCREEN_HEIGHT, SHIELD_TYPE, DEFAULT_TYPE
 
 class BulletEnemy(Bullet):
     WIDTH = 9
@@ -17,6 +17,7 @@ class BulletEnemy(Bullet):
         self.rect.y += self.SPEED
         if self.rect.y >= SCREEN_HEIGHT:
             self.is_alive = False
-        if not player.power_type == SHIELD_TYPE:
+
+        if  not player.power_type == SHIELD_TYPE:
             super().update(player)
 

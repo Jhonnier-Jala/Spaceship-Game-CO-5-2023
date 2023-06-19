@@ -44,7 +44,7 @@ class Spaceship:
             self.rect.y -= 10
     
     def move_down(self):
-        if self.rect.y < SCREEN_HEIGHT - 70:
+        if self.rect.y < SCREEN_HEIGHT - 60:
             self.rect.y += 10
     
     def shoot(self, bullet_handler):
