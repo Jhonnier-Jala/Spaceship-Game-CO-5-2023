@@ -50,9 +50,6 @@ class LevelHandler:
         elif current_level:
             current_level.draw(screen)
         
-        # if current_level:
-        #     current_level['enemy_handler'].draw(screen)
-        #     current_level['ally_ship'].draw(screen)
 
     def is_level_completed(self):
         current_level = self.get_current_level()

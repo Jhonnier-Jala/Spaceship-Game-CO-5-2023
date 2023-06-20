@@ -55,12 +55,9 @@ class EnemyHandler:
         for enemy in self.enemies:
             enemy.draw(screen)
         if self.is_countdown_active:
-            countdown_seconds = int(self.countdown_duration / 1000) + 1
-            countdown_text = f"Next level in {countdown_seconds} seconds"
-            text, text_rect = text_utils.get_message(countdown_text, 40, WHITE_COLOR)
+            countdown_seconds = int(self.countdown_duration / 1000)
+            text, text_rect = text_utils.get_message(f"Next level in {countdown_seconds} seconds", 40, WHITE_COLOR)
             screen.blit(text,text_rect)
-        # else:
-        #     if self.current_level:
                 
 
     def add_enemy(self):
